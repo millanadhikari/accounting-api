@@ -36,7 +36,7 @@ POST http://localhost:3001/v1/user/reset-password
 Content-Type: application/json
 
 {
-    "email":  "milanR@gmail.net"
+    "email":  "milanR@gmail.com"
 }
 
       
@@ -46,8 +46,8 @@ Content-Type: application/json
 
 {
     "email":  "milanR@gmail.com",
-    "pin": "023857",
-    "newPassword":"Manakamana123"
+    "pin": "537892 ",
+    "newPassword":"Birtamode123"
 
 }
 
