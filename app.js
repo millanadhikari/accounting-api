@@ -29,11 +29,15 @@ app.use(bodyParser.json());
 
 //load routers
 const userRouter = require("./src/routers/user.router")
+const tokenRouter = require("./src/routers/tokens.router")
+
 
 // app.get('/', (req, res) => {
 //     res.send(JSON.stringify({hello:"word"}))
 // })
 app.use("/v1/user", userRouter)
+app.use("/v1/token", tokenRouter)
+
 
 app.use((req, res, next) => {
     const error = new Error("Resources not found")    
