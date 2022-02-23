@@ -30,14 +30,16 @@ app.use(bodyParser.json());
 //load routers
 const userRouter = require("./src/routers/user.router")
 
-
-app.use("/v1/user", userRouter)
-
-app.use((req, res, next) => {
-    const error = new Error("Resources not found")    
-    error.status = 404
-    next(error)
+app.get('/', (req, res) => {
+    res.send(JSON.stringify({hello:"word"}))
 })
+// app.use("/v1/user", userRouter)
+
+// app.use((req, res, next) => {
+//     const error = new Error("Resources not found")    
+//     error.status = 404
+//     next(error)
+// })
 
 
 app.use((error, req, res, next) => {
