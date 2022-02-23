@@ -11,7 +11,7 @@ const connectDB = require('./src/db/mongoose');
 
 const app = express();
 
-const port = process.env.PORT ;
+const port = process.env.PORT || '3001';
 connectDB();
 
 
@@ -47,4 +47,4 @@ app.use((error, req, res, next) => {
 //Error handler 
 
 const handleError = require("./src/utils/errorHandler")
-app.listen(port, () => console.log(`listening on localhost:${port}`))
+app.listen(port, '0.0.0.0', () => console.log(`listening on localhost:${port}`))
