@@ -48,3 +48,10 @@ app.use((error, req, res, next) => {
 
 const handleError = require("./src/utils/errorHandler")
 app.listen(port, '0.0.0.0', () => console.log(`listening on localhost:${port}`))
+
+process.on('SIGTERM', () => {
+    console.log('SIGTERM received');
+    server.close(() => {
+         console.log('Process terminated');
+    });
+});
