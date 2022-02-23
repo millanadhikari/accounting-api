@@ -51,23 +51,23 @@ const storeUserRefreshJWT = (_id, token) => {
     })
 }
 
-//     const getCustomerById = async (_id) => {
-//         return new Promise((resolve, reject) => {
-//             if(!_id) return false
-//             try {
-//                 CustomerSchema.findOne({_id}, (error, data) => {
-//                     if(error) {
-//                         console.log(error)
-//                        reject(error)
-//                     }
-//                     resolve(data)
-//                     });
-//             } catch (error) {
-//                 reject(error)
-//             }
+    const getUserById = async (_id) => {
+        return new Promise((resolve, reject) => {
+            if(!_id) return false
+            try {
+                UserSchema.findOne({_id}, (error, data) => {
+                    if(error) {
+                        console.log(error)
+                       reject(error)
+                    }
+                    resolve(data)
+                    });
+            } catch (error) {
+                reject(error)
+            }
 
-//         })
-//         }
+        })
+        }
 
 //         const verifyUser = (_id, email) => {
 //             return new Promise((resolve, reject) => {
@@ -97,7 +97,7 @@ module.exports = {
     insertUser,
     getUserByEmail,
     storeUserRefreshJWT,
-    // getCustomerById,
+    getUserById,
     // verifyUser
 
 }

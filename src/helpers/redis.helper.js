@@ -3,9 +3,12 @@ const client = redis.createClient(process.env.REDIS_URL);
 
 
 //redis://localhost: 6379
+// client.connect()
 client.on("error", function (error) {
     console.error(error);
   });
+
+// client.connect()
 
 const setJWT = (key, value) => {
     return new Promise((resolve, reject)=> {

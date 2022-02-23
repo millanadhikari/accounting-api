@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router();
 const { hashPassword, comparePassword } = require("../helpers/bycrypt.helper");
 const { createAccessJWT, createRefreshJWT } = require('../helpers/jwt.helper');
-const { insertUser, getUserByEmail } = require('../modals/user/User.model');
+const { userAuthorization } = require('../middlewares/authorization.middleware');
+const { insertUser, getUserByEmail, getUserById } = require('../modals/user/User.model');
 
 
 router.all('/', (req, res, next) => {
@@ -39,6 +40,7 @@ router.post('/login', async (req, res) => {
 
 })
 
+//Creating a new user
 router.post("/", async (req, res) => { 
     const {name, phone, email, password} = req.body
     try {
@@ -64,7 +66,25 @@ router.post("/", async (req, res) => {
     
 })
 
-//Create User End point
+// Get customer profile routers
+router.get("/", userAuthorization, async (req, res) => {
+    //this data coming from database
+
+    const _id = req.userId
+
+    const userProf = await getUserById(_id) 
+    const { name, email } = userProf;
+
+    res.json({
+        user: {
+            _id,
+            name,
+            email,
+        },
+    });
+});
+
+
 
 
 module.exports = router
