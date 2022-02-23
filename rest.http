@@ -36,9 +36,21 @@ POST http://localhost:3001/v1/user/reset-password
 Content-Type: application/json
 
 {
-    "email": "Sadhguru@gmail.com"
+    "email":  "milanR@gmail.net"
+}
+
+      
+###Password reset endpoints
+PATCH http://localhost:3001/v1/user/reset-password
+Content-Type: application/json
+
+{
+    "email":  "milanR@gmail.com",
+    "pin": "023857",
+    "newPassword":"Manakamana123"
+
 }
 
 ###User Logout Endpoint   
-DELETE http://localhost:3001/v1/customer/logout
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRmZGRAZ21haWwuY29tIiwiX2lkIjoiNjE1ZmQ3MTZmOTVjNDFmMGYxNDkyNzVmIiwiaWF0IjoxNjMzNjgxNDE0LCJleHAiOjE2MzM2ODIzMTR9.BjsnOSuTOStnDObfOzTI4OqSpPAEHWDdCCaFyxFWGYI
+DELETE http://localhost:3001/v1/user/logout
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pbGFuckBnbWFpbC5jb20iLCJfaWQiOiI2MjE2MGQ5ZGFmNGZlYTU1ODZlODE0MzMiLCJpYXQiOjE2NDU2MTQyNDEsImV4cCI6MTY0NTYxNTE0MX0.SeHuDiejDZvey7RNgByWeIhYljrfkZ0fCr1mqlZWufg
