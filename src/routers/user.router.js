@@ -6,7 +6,7 @@ const { createAccessJWT, createRefreshJWT } = require('../helpers/jwt.helper');
 const { deleteJWT } = require('../helpers/redis.helper');
 const { userAuthorization } = require('../middlewares/authorization.middleware');
 const { resetPassReqValidation, updatePassValidation } = require('../middlewares/formValidation.middleware');
-const { setPasswordResetPin, getPinByEmailPin, deletePin } = require('../modals/resetPin/ResetPin.model');
+const { setPasswordResetPin, getPinByEmailPin, deletePin } = require('../modals/resetPin/resetPin.model');
 const { insertUser, getUserByEmail, getUserById, storeUserRefreshJWT, updatePassword } = require('../modals/user/User.model');
 
 router.all('/', (req, res, next) => {
@@ -38,6 +38,7 @@ router.post('/login', async (req, res) => {
     const accessJWT = await createAccessJWT(user.email, `${user._id}`)
 
     const refreshJWT = await createRefreshJWT(user.email, `${user._id}`)
+    console.log('hey')
 
     res.json({ status: "success", message: "Login success", accessJWT, refreshJWT })
 
