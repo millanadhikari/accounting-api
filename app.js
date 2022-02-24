@@ -53,5 +53,5 @@ app.use((error, req, res, next) => {
 //Error handler 
 
 const handleError = require("./src/utils/errorHandler")
-app.listen(port, '0.0.0.0', () => console.log(`listening on localhost:${port}`))
+app.listen(port, () => console.log(`listening on localhost:${port}`))
 
