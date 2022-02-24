@@ -1,4 +1,4 @@
-const {ResetPinSchema} = require('./ResetPin.schema')
+const {ResetPinSchema} = require('./resetPin.schema')
 const {randomPinNumber} = require('../../utils/randomGenerator')
 
 
@@ -28,6 +28,7 @@ const setPasswordResetPin = async (email) => {
             console.log(error);
             resolve(false);
           }
+          console.log('hey')
   
           resolve(data);
         });
