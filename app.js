@@ -30,6 +30,8 @@ app.use(bodyParser.json());
 //load routers
 const userRouter = require("./src/routers/user.router")
 const tokenRouter = require("./src/routers/tokens.router")
+const customerRouter = require("./src/routers/customer.router")
+
 
 
 // app.get('/', (req, res) => {
@@ -37,6 +39,8 @@ const tokenRouter = require("./src/routers/tokens.router")
 // })
 app.use("/v1/user", userRouter)
 app.use("/v1/token", tokenRouter)
+app.use("/v1/customer", customerRouter)
+
 
 
 app.use((req, res, next) => {
