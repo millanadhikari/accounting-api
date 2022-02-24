@@ -1,19 +1,44 @@
 const nodemailer = require("nodemailer");
+const {google} = require ('googleapis')
 
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-      user: "else.kirlin32@ethereal.email",
-      pass: "vW1PSpPNNjQSpTS5Gg",
-    },
-  });
-  
+const CLIENT_ID = "420934377541-04m0q8qsmnff5ncvsbsnh2pbt7i0lnp8.apps.googleusercontent.com"
+const CLIENT_SECRET = "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"
+const REDIRECT_URL = "https://developers.google.com/oauthplayground"
+const REFRESH_TOKEN = "1//04mHz-g6ZN9pACgYIARAAGAQSNgF-L9IrD6S_0a8_O68i4kIRp3OESuyYeu8RQ4rF6FXOQM3as17n_oIUiPu6JepSxqg-d0ntJQ"
+
+// const transporter = nodemailer.createTransport({
+//     host: "smtp.ethereal.email",
+//     port: 587,
+//     auth: {
+//       user: "else.kirlin32@ethereal.email",
+//       pass: "vW1PSpPNNjQSpTS5Gg",
+//     },
+//   });
+// const oAuth2Client =  new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
   const send = (info) => {
     return new Promise(async (resolve, reject) => {
       try {
         // send mail with defined transport object
+        
+        // const accessToken = await oAuth2Client.getAccessToken()
+        const transporter = await nodemailer.createTransport({
+          service:"gmail",
+          auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD,
+          }
+          // auth: {
+          //   type:'OAuth2',
+          //   user: "wedocleaning99@gmail.com",
+          //   clientId:CLIENT_ID,
+          //   clientSecret:CLIENT_SECRET,
+          //   refreshToken:REFRESH_TOKEN,
+          //   accessToken: accessToken
+          // },
+        });
+          
+
         let result = await transporter.sendMail(info);
   
         console.log("Message sent: %s", result.messageId);

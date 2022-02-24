@@ -1,21 +1,21 @@
 ###Customer Sign up endpoint
 
-POST http://localhost:3001/v1/customer
+POST http://localhost:3001/v1/user
 Content-Type: application/json
 
 {
      "name": "Shree Ram",
-    "email": "dfdd@gmail.com",
+    "email": "millanadhikari@gmail.com",
     "password": "Manakamana123",
     "phone": "04212121212"
 }
 
 ###Customer Sign In endpoint
-POST http://localhost:3001/v1/customer/login
+POST http://localhost:3001/v1/user/login
 Content-Type: application/json
 
 {
-         "email": "dfdd@gmail.com",
+         "email": "wedocleaning99@gmail.com",
     "password": "Manakamana123"
 }
 
@@ -36,7 +36,7 @@ POST http://localhost:3001/v1/user/reset-password
 Content-Type: application/json
 
 {
-    "email":  "milanR@gmail.com"
+    "email":  "millanadhikari@gmail.com"
 }
 
       
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 {
     "email":  "milanR@gmail.com",
-    "pin": "537892 ",
+    "pin": "434119",
     "newPassword":"Birtamode123"
 
 }
