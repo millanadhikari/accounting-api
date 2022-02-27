@@ -113,6 +113,31 @@ const storeUserRefreshJWT = (_id, token) => {
             });
           };
 
+          const getAllUsers = async () => {
+            return new Promise((resolve, reject) => {
+                try {
+                    UserSchema.find({})
+                    .then((data) => {
+                      console.log(data)
+                      // let newData = {
+                      //   _id:data._id, 
+                      //   name:data.name, 
+                      //   email:data.email,
+                      //   phone:data.phone,
+                      //   isSuperAdmin:data.isSuperAdmin,
+                      //   isTeam:data.isTeam,
+                      // }
+                      resolve(data)
+                    })
+                    .catch((error) => reject(error))
+                } catch (error) {
+                    reject(error)
+                }
+    
+            })
+            }
+      
+
 
 
 module.exports = {
@@ -121,6 +146,7 @@ module.exports = {
     storeUserRefreshJWT,
     getUserById,
     updatePassword,
-    verifyUser
+    verifyUser,
+    getAllUsers
 
 }

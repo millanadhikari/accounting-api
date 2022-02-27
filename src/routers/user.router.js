@@ -7,7 +7,7 @@ const { deleteJWT } = require('../helpers/redis.helper');
 const { userAuthorization } = require('../middlewares/authorization.middleware');
 const { resetPassReqValidation, updatePassValidation } = require('../middlewares/formValidation.middleware');
 const { setPasswordResetPin, getPinByEmailPin, deletePin } = require('../modals/resetPin/resetPin.model');
-const { insertUser, getUserByEmail, getUserById, storeUserRefreshJWT, updatePassword } = require('../modals/user/User.model');
+const { insertUser, getUserByEmail, getUserById, storeUserRefreshJWT, updatePassword, getAllUsers } = require('../modals/user/User.model');
 
 router.all('/', (req, res, next) => {
        next()
@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
 
 //Creating a new user
 router.post("/", async (req, res) => { 
-    const {name, phone, email, password} = req.body
+    const {name, phone, email, isSuperAdmin, isTeam, password} = req.body
     try {
         //hashing password
         const hashPass = await hashPassword(password)
@@ -56,6 +56,8 @@ router.post("/", async (req, res) => {
             phone,
             email,
             password: hashPass,
+            isSuperAdmin,
+            isTeam
         }
 
 
@@ -70,23 +72,25 @@ router.post("/", async (req, res) => {
     
 })
 
-// // Get customer profile routers
-// router.get("/", userAuthorization, async (req, res) => {
-//     //this data coming from database
+// Get customer profile routers
+router.get("/", userAuthorization, async (req, res) => {
+    //this data coming from database
 
-//     const _id = req.userId
+    const _id = req.userId
 
-//     const userProf = await getUserById(_id) 
-//     const { name, email } = userProf;
+    const userProf = await getUserById(_id) 
+    const { name, email, isSuperAdmin, isTeam } = userProf;
 
-//     res.json({
-//         user: {
-//             _id,
-//             name,
-//             email,
-//         },
-//     });
-// });
+    res.json({
+        user: {
+            _id,
+            name,
+            email,
+            isSuperAdmin,
+            isTeam
+        },
+    });
+});
 
 // //reset password endpoint
 // router.post("/reset-password", resetPassReqValidation, async (req, res) => {
@@ -153,7 +157,20 @@ router.post("/", async (req, res) => {
 // 	});
 // });
 
+//Get all Users by Super Admin
+router.get("/all", async (req, res) => {
+    try { 
+        const result = await getAllUsers()
 
+        return res.json({
+            status:"success", result
+        })
+
+
+    } catch (error) { 
+        res.json({status:"error", message:error.message})
+    }
+})
 router.delete("/logout", userAuthorization, async (req, res) => {
     const { authorization } = req.headers
     //this data coming from database
