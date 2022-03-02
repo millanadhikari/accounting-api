@@ -35,7 +35,7 @@ const getCustomerByEmail = email => {
         return new Promise ((resolve, reject) => {
             try { 
                 CustomerSchema
-                    .find({})
+                    .find({}, {name:1, email:1, phone:1})
                     .then((data) => {
                         resolve(data)
                     })
@@ -78,7 +78,6 @@ const getCustomerByEmail = email => {
             } catch (error) {
                 reject(error)
             }
-    
         })
         }
 

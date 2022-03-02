@@ -7,10 +7,10 @@ const { deleteJWT } = require('../helpers/redis.helper');
 const { userAuthorization } = require('../middlewares/authorization.middleware');
 const { resetPassReqValidation, updatePassValidation } = require('../middlewares/formValidation.middleware');
 const { setPasswordResetPin, getPinByEmailPin, deletePin } = require('../modals/resetPin/resetPin.model');
-const { insertUser, getUserByEmail, getUserById, storeUserRefreshJWT, updatePassword, getAllUsers } = require('../modals/user/User.model');
+const { insertUser, getUserByEmail, getUserById, storeUserRefreshJWT, updatePassword, getAllUsers, updateUserbySuperAdmin } = require('../modals/user/User.model');
 
 router.all('/', (req, res, next) => {
-       next()
+    next()
 })
 
 // User Sign in Endpoint
@@ -22,16 +22,15 @@ router.post('/login', async (req, res) => {
     }
     const user = await getUserByEmail(email)
 
-    if(!user) { 
-        return res.json ({status:"error", message:"Invalid Email"})
+    if (!user) {
+        return res.json({ status: "error", message: "Invalid Email" })
     }
     const passFromDb = user && user.id ? user.password : null
     if (!passFromDb) {
         return res.json({ status: "error", message: "Invalid email or password" })
     }
-
+    console.log(passFromDb)
     const result = await comparePassword(password, passFromDb);
-    console.log(result)
     if (!result) {
         return res.json({ status: "error", message: "Invalid email or password" })
     }
@@ -45,8 +44,8 @@ router.post('/login', async (req, res) => {
 })
 
 //Creating a new user
-router.post("/", async (req, res) => { 
-    const {name, phone, email, isSuperAdmin, isTeam, password} = req.body
+router.post("/", async (req, res) => {
+    const { name, phone, email, isSuperAdmin, isTeam, password } = req.body
     try {
         //hashing password
         const hashPass = await hashPassword(password)
@@ -65,11 +64,11 @@ router.post("/", async (req, res) => {
         console.log(result)
         res.json({ message: "New user created", result })
 
-    } catch (error) { 
+    } catch (error) {
         console.log(error)
-        res.json({status:"error", message:error.message})
+        res.json({ status: "error", message: error.message })
     }
-    
+
 })
 
 // Get customer profile routers
@@ -78,7 +77,7 @@ router.get("/", userAuthorization, async (req, res) => {
 
     const _id = req.userId
 
-    const userProf = await getUserById(_id) 
+    const userProf = await getUserById(_id)
     const { name, email, isSuperAdmin, isTeam } = userProf;
 
     res.json({
@@ -159,18 +158,47 @@ router.get("/", userAuthorization, async (req, res) => {
 
 //Get all Users by Super Admin
 router.get("/all", async (req, res) => {
-    try { 
-        const result = await getAllUsers()
+    const keyword = req.query.search
+        ? {
+            $or: [
+                { name: { $regex: req.query.search, $options: "i" } },
+                { email: { $regex: req.query.search, $options: "i" } },
+            ],
+        }
+        : {};
+    try {
+       
+        const result = await getAllUsers(keyword)
 
         return res.json({
-            status:"success", result
+            status: "success", result
         })
 
 
-    } catch (error) { 
-        res.json({status:"error", message:error.message})
+    } catch (error) {
+        res.json({ status: "error", message: error.message })
     }
 })
+
+//Update User Profile by Super Admin
+router.patch("/update-user/:_id", userAuthorization, async (req, res) => {
+    try {
+        const { _id } = req.params;
+        const userId = req.userId
+        const { name, email, phone, password, isSuperAdmin, isTeam } = req.body
+
+        const result = await updateUserbySuperAdmin({ _id, userId, name, email, phone, password, isSuperAdmin, isTeam })
+
+        if (result._id) {
+            return res.json({
+                status: "Success", message: "User has been Updated."
+            })
+        }
+    } catch (error) {
+        res.json({ status: "error", message: error.message })
+    }
+})
+
 router.delete("/logout", userAuthorization, async (req, res) => {
     const { authorization } = req.headers
     //this data coming from database
