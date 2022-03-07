@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { insertCustomer, getCustomerByEmail, getCustomerById, getCustomers } = require("../modals/customer/Customer.model")
+const { insertCustomer, getCustomerByEmail, getCustomerById, getCustomers, updateCustomerById } = require("../modals/customer/Customer.model")
 const { userAuthorization } = require("../middlewares/authorization.middleware")
 
 router.all('/', (req, res, next) => {
@@ -32,7 +32,7 @@ router.post('/', userAuthorization, async (req, res) => {
     const { name, phone, email } = req.body
     const userId = req.userId
     const newUserObj = {
-        userID: userId,
+        clientId: userId,
         name,
         phone,
         email,
@@ -41,8 +41,9 @@ router.post('/', userAuthorization, async (req, res) => {
     try {
 
         const result = await insertCustomer(newUserObj)
-        console.log(result)
+       if(result._id) {
         res.json({ message: "New customer created", result })
+       }
     } catch (error) {
         console.log(error);
         res.json({ status: "error", message: error.message })
@@ -92,6 +93,27 @@ router.get("/all",  async (req, res) => {
      }
    });
 
+   //Update Customer by customer_id
+
+   router.patch("/update-customer/:_id", async (req, res) => {
+     try {
+        const {_id} = req.params
+        const userID = req.userID
+
+        const { name, email, phone, } = req.body
+
+        const result = await updateCustomerById({_id, name, email, phone})
+
+        if (result._id) {
+          return res.json({
+              status: "Success", message: "Customer has been Updated."
+          })
+      }
+
+     } catch (error) { 
+       res.json({status:"error", message:error.message});
+     }
+   })
 // router.delete("/logout", userAuthorization, async (req, res) => {
 //     const { authorization } = req.headers
 //     //this data coming from database

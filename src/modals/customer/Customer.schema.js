@@ -5,12 +5,10 @@ const validator = require('validator')
 
 
 const CustomerSchema = new Schema({
-    userID:{
-        type: String,
-        required: true,
-        maxlength: 50,
-        trim: true,
-        unique: true
+ 
+    clientId:{
+        type: Schema.Types.ObjectId,
+        
 
     },
     name: {
