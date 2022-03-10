@@ -90,15 +90,17 @@ const updateCustomerById = ({ _id, name, email, phone }) => {
 // }
 
 const getCustomerById = async (_id) => {
+    console.log(_id)
     return new Promise((resolve, reject) => {
         if (!_id) return false
         try {
-            CustomerSchema.findOne({ _id }, (error, data) => {
-                if (error) {
+            CustomerSchema.findById(_id, (error, data) => {
+                 if (error) {
                     console.log(error)
                     reject(error)
                 }
-                resolve(data)
+              
+               resolve(data)
             });
         } catch (error) {
             reject(error)

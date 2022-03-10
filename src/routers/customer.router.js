@@ -8,22 +8,32 @@ router.all('/', (req, res, next) => {
 })
 
 // Get customer profile routers
-// router.get("/", userAuthorization, async (req, res) => {
-//     //this data coming from database
+router.get("/:_id", async (req, res) => {
+    //this data coming from database
 
-//     const _id = req.userId
+    try {
+      const { _id } = req.params;
+      const clientId = req.userId;
+  
+      const result = await getCustomerById(_id);
 
-//     const userProf = await getCustomerById(_id)
-//     const { name, email } = userProf;
-
-//     res.json({
-//         user: {
-//             _id,
-//             name,
-//             email,
-//         },
-//     });
-// });
+      if (result._id) {
+        return res.json({
+          status: "success",
+          message: "Succesful.",
+          lkdjf:'lkjdf',
+          result
+        });
+      }
+      res.json({
+        status: "error",
+        message: "Unable to get the customer",
+      });
+    } catch (error) {
+      res.json({ status: "error", message: error.message });
+    }
+  
+});
 
 
 
@@ -87,7 +97,7 @@ router.get("/all",  async (req, res) => {
          totalPages,
          previous,
          paginatedResults
-       });
+       });  
      } catch (error) {
        res.json({ status: "error", message: error.message });
      }
